@@ -1,0 +1,12 @@
+com.example.pro0030.app-jetified-window-1.0.0-beta04-0 C:\Users\57300\.gradle\caches\transforms-3\3361ee221103d5d18fb782754badc809\transformed\jetified-window-1.0.0-beta04\res
+com.example.pro0030.app-jetified-window-java-1.0.0-beta04-1 C:\Users\57300\.gradle\caches\transforms-3\3a0795aa31db2e0535bdee5db19e9a97\transformed\jetified-window-java-1.0.0-beta04\res
+com.example.pro0030.app-jetified-annotation-experimental-1.1.0-2 C:\Users\57300\.gradle\caches\transforms-3\8722a534759c8de19c262ff1ca65b1bd\transformed\jetified-annotation-experimental-1.1.0\res
+com.example.pro0030.app-core-1.6.0-3 C:\Users\57300\.gradle\caches\transforms-3\9384cc99d74b85de4585160afdeb62ed\transformed\core-1.6.0\res
+com.example.pro0030.app-main-4 C:\Users\57300\Desktop\flutter_2023\pro0030\android\app\src\main\res
+com.example.pro0030.app-release-5 C:\Users\57300\Desktop\flutter_2023\pro0030\android\app\src\release\res
+com.example.pro0030.app-pngs-6 C:\Users\57300\Desktop\flutter_2023\pro0030\build\app\generated\res\pngs\release
+com.example.pro0030.app-resValues-7 C:\Users\57300\Desktop\flutter_2023\pro0030\build\app\generated\res\resValues\release
+com.example.pro0030.app-rs-8 C:\Users\57300\Desktop\flutter_2023\pro0030\build\app\generated\res\rs\release
+com.example.pro0030.app-mergeReleaseResources-9 C:\Users\57300\Desktop\flutter_2023\pro0030\build\app\intermediates\incremental\release\mergeReleaseResources\merged.dir
+com.example.pro0030.app-mergeReleaseResources-10 C:\Users\57300\Desktop\flutter_2023\pro0030\build\app\intermediates\incremental\release\mergeReleaseResources\stripped.dir
+com.example.pro0030.app-merged_res-11 C:\Users\57300\Desktop\flutter_2023\pro0030\build\app\intermediates\merged_res\release
