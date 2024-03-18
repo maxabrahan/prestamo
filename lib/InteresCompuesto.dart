@@ -64,74 +64,76 @@ class _InterestCalculatorPageState extends State<InterestCalculatorPage> {
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-                'El interés compuesto es un método financiero donde los intereses se calculan no solo sobre el capital inicial, sino también sobre los intereses acumulados. Con el tiempo, esto resulta en un crecimiento exponencial de la inversión. A medida que los intereses se reinvierten, el capital total aumenta, generando mayores ganancias en comparación con el interés simple.'),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                  " VF = VP (1+i) n donde VF es el Valor Futuro, VP es el Valor Presente, i es la tasa de interés periódica vencida y n es el número de periodos o plazo. VF=VP (1+i)^n"),
-            ),
-            TextField(
-              controller: _capitalController,
-              decoration: InputDecoration(
-                labelText: 'Capital',
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                  'El interés compuesto es un método financiero donde los intereses se calculan no solo sobre el capital inicial, sino también sobre los intereses acumulados. Con el tiempo, esto resulta en un crecimiento exponencial de la inversión. A medida que los intereses se reinvierten, el capital total aumenta, generando mayores ganancias en comparación con el interés simple.'),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                    " VF = VP (1+i) n donde VF es el Valor Futuro, VP es el Valor Presente, i es la tasa de interés periódica vencida y n es el número de periodos o plazo. VF=VP (1+i)^n"),
               ),
-            ),
-            TextField(
-              controller: _tasaController,
-              decoration: InputDecoration(
-                labelText: 'Tasa (%)',
+              TextField(
+                controller: _capitalController,
+                decoration: InputDecoration(
+                  labelText: 'Capital',
+                ),
               ),
-            ),
-            TextField(
-              controller: _aniosController,
-              decoration: InputDecoration(
-                labelText: 'Años',
+              TextField(
+                controller: _tasaController,
+                decoration: InputDecoration(
+                  labelText: 'Tasa (%)',
+                ),
               ),
-            ),
-            TextField(
-              controller: _mesesController,
-              decoration: InputDecoration(
-                labelText: 'Meses',
+              TextField(
+                controller: _aniosController,
+                decoration: InputDecoration(
+                  labelText: 'Años',
+                ),
               ),
-            ),
-            TextField(
-              controller: _diasController,
-              decoration: InputDecoration(
-                labelText: 'Días',
+              TextField(
+                controller: _mesesController,
+                decoration: InputDecoration(
+                  labelText: 'Meses',
+                ),
               ),
-            ),
-            DropdownButton<String>(
-              value: selectedRateType,
-              onChanged: (String? newValue) {
-                setState(() {
-                  selectedRateType = newValue!;
-                });
-              },
-              items: <String>[
-                'Diariamente',
-                'Mensualmente',
-                'Trimestralmente',
-                'Cuatrimestralmente',
-                'Semestralmente',
-                'Anualmente'
-              ].map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),
-            ElevatedButton(
-              onPressed: _calcularMonto,
-              child: Text('Calcular'),
-            ),
-            SizedBox(height: 20),
-            Text('Monto Compuesto: ${_montoCompuestoController.text}'),
-          ],
+              TextField(
+                controller: _diasController,
+                decoration: InputDecoration(
+                  labelText: 'Días',
+                ),
+              ),
+              DropdownButton<String>(
+                value: selectedRateType,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    selectedRateType = newValue!;
+                  });
+                },
+                items: <String>[
+                  'Diariamente',
+                  'Mensualmente',
+                  'Trimestralmente',
+                  'Cuatrimestralmente',
+                  'Semestralmente',
+                  'Anualmente'
+                ].map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+              ElevatedButton(
+                onPressed: _calcularMonto,
+                child: Text('Calcular'),
+              ),
+              SizedBox(height: 20),
+              Text('Monto Compuesto: ${_montoCompuestoController.text}'),
+            ],
+          ),
         ),
       ),
     );

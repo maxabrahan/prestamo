@@ -9,9 +9,9 @@ class Dashboard extends StatelessWidget {
   var height, width;
 
   List imgData = [
-    "images/itsimple.png",
-    "images/itcompuesto.png",
-    "images/anualidades.png",
+    "/assetsimages/itsimple.png",
+    "/assetsimages/itcompuesto.png",
+    "/assets/images/anualidades.png",
   ];
 
   List titles = [
