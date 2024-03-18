@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pro0030/Anualidad.dart';
+import 'package:pro0030/Dashboard.dart';
 import 'package:pro0030/InteresCompuesto.dart';
 import 'package:pro0030/InteresSimple.dart';
 
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const MyHomePage(title: 'Ingenieria Economica'),
+      home: Dashboard(),
     );
   }
 }

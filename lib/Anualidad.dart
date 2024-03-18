@@ -148,39 +148,109 @@ class _AnualidadesFormState extends State<AnualidadesForm> {
   }
 
   Widget getDescripcion(TipoCalculo tipo) {
-    return Column(
-      children: [
-        Text(
-          tipo == TipoCalculo.ValorPresente
-              ? "El Valor Presente (VP) es el valor actual de una serie de flujos de efectivo futuros, descontados a una tasa de interés específica. Representa cuánto vale una cantidad de dinero en el presente, considerando su valor futuro y la tasa de descuento aplicada."
-              : tipo == TipoCalculo.ValorFuturo
-                  ? "El Valor Futuro (VF) es el valor que una inversión tendrá en el futuro, después de acumular intereses o rendimientos a lo largo del tiempo. Representa la cantidad total que se espera que una inversión crezca, incluyendo tanto el principal inicial como los intereses o rendimientos generados."
-                  : tipo == TipoCalculo.Monto
-                      ? "El Monto de la Anualidad es el valor total de todos los pagos realizados o recibidos en una serie de pagos periódicos iguales, conocidos como anualidades. Es la suma de todos los pagos, incluyendo tanto el capital inicial como los intereses generados durante el período de tiempo especificado."
-                      : "El Capital Inicial es la cantidad de dinero que se invierte inicialmente para generar una renta o un flujo de efectivo futuro.",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              fontSize: 12.0,
-              color: Color.fromARGB(
-                  255, 7, 7, 7)), // Cambiar tamaño y color de la letra
-        ),
-        if (tipo == TipoCalculo.Monto)
-          Text("La fórmula para calcular el monto es:"),
-        if (tipo != TipoCalculo.Monto)
-          Image.asset(
-              "assets/${tipo.toString().split('.').last.toLowerCase()}.png",
-              width: 200,
-              height: 200),
-      ],
-    );
+    String formula = '';
+    switch (tipo) {
+      case TipoCalculo.ValorPresente:
+        formula = 'VP = \\frac{C}{((1 + i)^n - 1) / i}';
+        return Column(
+          children: [
+            Text(
+              "El Valor Presente (VP) es el valor actual de una serie de flujos de efectivo futuros, descontados a una tasa de interés específica. Representa cuánto vale una cantidad de dinero en el presente, considerando su valor futuro y la tasa de descuento aplicada.",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 12.0, color: Color.fromARGB(255, 7, 7, 7)),
+            ),
+            if (formula.isNotEmpty)
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.0),
+                child: Text(
+                  'Fórmula: $formula',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 12.0, color: Color.fromARGB(255, 7, 7, 7)),
+                ),
+              ),
+          ],
+        );
+      case TipoCalculo.ValorFuturo:
+        formula = 'VF = C \\times \\frac{(1 + i)^n - 1}{i}';
+        return Column(
+          children: [
+            Text(
+              "El Valor Futuro (VF) es el valor que una inversión tendrá en el futuro, después de acumular intereses o rendimientos a lo largo del tiempo. Representa la cantidad total que se espera que una inversión crezca, incluyendo tanto el principal inicial como los intereses o rendimientos generados.",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 12.0, color: Color.fromARGB(255, 7, 7, 7)),
+            ),
+            if (formula.isNotEmpty)
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.0),
+                child: Text(
+                  'Fórmula: $formula',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 12.0, color: Color.fromARGB(255, 7, 7, 7)),
+                ),
+              ),
+          ],
+        );
+      case TipoCalculo.Monto:
+        formula = 'M = C \\times \\frac{(1 - (1 + i)^{-n})}{i}';
+        return Column(
+          children: [
+            Text(
+              "El Monto de la Anualidad es el valor total de todos los pagos realizados o recibidos en una serie de pagos periódicos iguales, conocidos como anualidades. Es la suma de todos los pagos, incluyendo tanto el capital inicial como los intereses generados durante el período de tiempo especificado.",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 12.0, color: Color.fromARGB(255, 7, 7, 7)),
+            ),
+            Text("La fórmula para calcular el monto es:",
+                textAlign: TextAlign.center),
+            if (formula.isNotEmpty)
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.0),
+                child: Text(
+                  'Fórmula: $formula',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 12.0, color: Color.fromARGB(255, 7, 7, 7)),
+                ),
+              ),
+          ],
+        );
+      case TipoCalculo.Capital:
+        formula = 'C = A \\times \\frac{(1 - (1 + i)^{-n})}{i}';
+        return Column(
+          children: [
+            Text(
+              "El Capital Inicial es la cantidad de dinero que se invierte inicialmente para generar una renta o un flujo de efectivo futuro.",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 12.0, color: Color.fromARGB(255, 7, 7, 7)),
+            ),
+            if (formula.isNotEmpty)
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.0),
+                child: Text(
+                  'Fórmula: $formula',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 12.0, color: Color.fromARGB(255, 7, 7, 7)),
+                ),
+              ),
+          ],
+        );
+      default:
+        return SizedBox.shrink();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:
-          Color.fromARGB(255, 169, 236, 245), // Cambiar color de fondo
       appBar: AppBar(
+        backgroundColor: Colors.indigo,
+        foregroundColor: Colors.white,
         title: Text('Ingeniería Económica',
             style: TextStyle(
                 fontSize:
@@ -192,30 +262,41 @@ class _AnualidadesFormState extends State<AnualidadesForm> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(
-                  onPressed: () =>
-                      setState(() => tipoCalculo = TipoCalculo.ValorPresente),
-                  child: Text("Calcular VP"),
+                Column(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () => setState(
+                          () => tipoCalculo = TipoCalculo.ValorPresente),
+                      child: Text("Calcular VP"),
+                    ),
+                    SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () =>
+                          setState(() => tipoCalculo = TipoCalculo.ValorFuturo),
+                      child: Text("Calcular VF"),
+                    ),
+                  ],
                 ),
-                ElevatedButton(
-                  onPressed: () =>
-                      setState(() => tipoCalculo = TipoCalculo.ValorFuturo),
-                  child: Text("Calcular VF"),
-                ),
-                ElevatedButton(
-                  onPressed: () =>
-                      setState(() => tipoCalculo = TipoCalculo.Monto),
-                  child: Text("Calcular Monto"),
-                ),
-                ElevatedButton(
-                  onPressed: () =>
-                      setState(() => tipoCalculo = TipoCalculo.Capital),
-                  child: Text("Calcular Capital"),
+                SizedBox(width: 16),
+                Column(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () =>
+                          setState(() => tipoCalculo = TipoCalculo.Monto),
+                      child: Text("Calcular Monto"),
+                    ),
+                    SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () =>
+                          setState(() => tipoCalculo = TipoCalculo.Capital),
+                      child: Text("Calcular Capital"),
+                    ),
+                  ],
                 ),
               ],
             ),
             Container(
-              padding: EdgeInsets.all(16),
+              padding: EdgeInsets.all(32),
               child: getDescripcion(tipoCalculo),
             ),
             Column(

@@ -15,7 +15,8 @@ class _InterestCalculatorPageState extends State<InterestCalculatorPage> {
   final TextEditingController _aniosController = TextEditingController();
   final TextEditingController _mesesController = TextEditingController();
   final TextEditingController _diasController = TextEditingController();
-  final TextEditingController _montoCompuestoController = TextEditingController();
+  final TextEditingController _montoCompuestoController =
+      TextEditingController();
 
   String selectedRateType = 'Diariamente';
 
@@ -58,32 +59,50 @@ class _InterestCalculatorPageState extends State<InterestCalculatorPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Calculadora de Interés Compuesto'),
+        backgroundColor: Colors.indigo,
+        foregroundColor: Colors.white,
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text('El interés compuesto es un método financiero donde los intereses se calculan no solo sobre el capital inicial, sino también sobre los intereses acumulados. Con el tiempo, esto resulta en un crecimiento exponencial de la inversión. A medida que los intereses se reinvierten, el capital total aumenta, generando mayores ganancias en comparación con el interés simple.'),
+            Text(
+                'El interés compuesto es un método financiero donde los intereses se calculan no solo sobre el capital inicial, sino también sobre los intereses acumulados. Con el tiempo, esto resulta en un crecimiento exponencial de la inversión. A medida que los intereses se reinvierten, el capital total aumenta, generando mayores ganancias en comparación con el interés simple.'),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                  " VF = VP (1+i) n donde VF es el Valor Futuro, VP es el Valor Presente, i es la tasa de interés periódica vencida y n es el número de periodos o plazo. VF=VP (1+i)^n"),
+            ),
             TextField(
               controller: _capitalController,
-              decoration: InputDecoration(labelText: 'Capital'),
+              decoration: InputDecoration(
+                labelText: 'Capital',
+              ),
             ),
             TextField(
               controller: _tasaController,
-              decoration: InputDecoration(labelText: 'Tasa (%)'),
+              decoration: InputDecoration(
+                labelText: 'Tasa (%)',
+              ),
             ),
             TextField(
               controller: _aniosController,
-              decoration: InputDecoration(labelText: 'Años'),
+              decoration: InputDecoration(
+                labelText: 'Años',
+              ),
             ),
             TextField(
               controller: _mesesController,
-              decoration: InputDecoration(labelText: 'Meses'),
+              decoration: InputDecoration(
+                labelText: 'Meses',
+              ),
             ),
             TextField(
               controller: _diasController,
-              decoration: InputDecoration(labelText: 'Días'),
+              decoration: InputDecoration(
+                labelText: 'Días',
+              ),
             ),
             DropdownButton<String>(
               value: selectedRateType,
@@ -112,7 +131,6 @@ class _InterestCalculatorPageState extends State<InterestCalculatorPage> {
             ),
             SizedBox(height: 20),
             Text('Monto Compuesto: ${_montoCompuestoController.text}'),
-            
           ],
         ),
       ),
