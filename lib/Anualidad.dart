@@ -1,218 +1,282 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 
-class Anualidades extends StatefulWidget {
+class AnualidadesForm extends StatefulWidget {
   @override
-  _AnualidadesState createState() => _AnualidadesState();
+  _AnualidadesFormState createState() => _AnualidadesFormState();
 }
 
-class _AnualidadesState extends State<Anualidades> {
-  String selectedAnnuityType = 'Anticipada';
-  double capital = 0.0;
-  double tasainteres = 0.0;
-  DateTime? selectedDate;
+class InputControl extends StatelessWidget {
+  final String labelName;
+  final String inputName;
+  final Function handleInputChange;
+  final String value;
+  final String type;
 
-  TextEditingController capitalController = TextEditingController();
-  TextEditingController tasaInteresController = TextEditingController();
+  const InputControl({
+    required this.labelName,
+    required this.inputName,
+    required this.handleInputChange,
+    required this.value,
+    required this.type,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      decoration: InputDecoration(labelText: labelName),
+      onChanged: (value) => handleInputChange(inputName, double.parse(value)),
+      initialValue: value,
+      keyboardType:
+          TextInputType.number, // or any other appropriate type based on 'type'
+    );
+  }
+}
+
+enum FrecuenciaPago {
+  Anual,
+  Mensual,
+  Trimestral,
+  Semestral,
+}
+
+enum TipoCalculo {
+  ValorPresente,
+  ValorFuturo,
+  Monto,
+  Capital,
+}
+
+class _AnualidadesFormState extends State<AnualidadesForm> {
+  double capital = 0;
+  double interes = 0;
+  double tiempo = 0;
+  FrecuenciaPago frecuenciaPago = FrecuenciaPago.Anual;
+
+  double? resultVa;
+  double? resultVf;
+  double? resultMonto;
+  double? resultCapital;
+  String? error;
+  TipoCalculo tipoCalculo = TipoCalculo.ValorPresente;
+
+  void handleInputChange(String name, double value) {
+    setState(() {
+      switch (name) {
+        case "capital":
+          capital = value;
+          break;
+        case "interes":
+          interes = value;
+          break;
+        case "tiempo":
+          tiempo = value;
+          break;
+        case "frecuenciaPago":
+          frecuenciaPago = FrecuenciaPago.values[value.toInt()];
+          break;
+      }
+    });
+  }
+
+  double calcularAnualidadesVa(
+      double capital, double interes, double tiempo, int frecuencia) {
+    final double tasaInteresPorcentual = interes / 100;
+    final double convertirTiempo = tiempo * frecuencia / 12;
+    final double anualidades = capital /
+        (((1 + tasaInteresPorcentual) *
+                    math.pow(1 + tasaInteresPorcentual, convertirTiempo) -
+                1) /
+            tasaInteresPorcentual);
+    return anualidades;
+  }
+
+  double calcularAnualidadesVf(
+      double capital, double interes, double tiempo, int frecuencia) {
+    final double tasaInteresPorcentual = interes / 100;
+    final double convertirTiempo = tiempo * frecuencia / 12;
+    final double valorFuturo = capital *
+        (math.pow(1 + tasaInteresPorcentual, convertirTiempo) - 1) /
+        tasaInteresPorcentual;
+    return valorFuturo;
+  }
+
+  double calcularMontoAnualidad(
+      double capital, double interes, double tiempo, int frecuencia) {
+    final double tasaInteresPorcentual = interes / 100;
+    final double convertirTiempo = tiempo * frecuencia / 12;
+    final double factorAnualidad =
+        (1 - math.pow(1 + tasaInteresPorcentual, -convertirTiempo)) /
+            tasaInteresPorcentual;
+    final double montoAnualidad = capital * factorAnualidad;
+    return montoAnualidad;
+  }
+
+  double calcularCapital(double capital, double interes, double tiempo) {
+    final double tasaInteresDecimal = interes / 100;
+    final double capitalan = capital *
+        ((1 - math.pow(1 + tasaInteresDecimal / 12, -tiempo)) /
+            (tasaInteresDecimal / 12));
+    return capitalan;
+  }
+
+  void onSubmit() {
+    try {
+      if (tipoCalculo == TipoCalculo.ValorPresente) {
+        resultVa = calcularAnualidadesVa(
+            capital, interes, tiempo, frecuenciaPago.index + 1);
+      } else if (tipoCalculo == TipoCalculo.ValorFuturo) {
+        resultVf = calcularAnualidadesVf(
+            capital, interes, tiempo, frecuenciaPago.index + 1);
+      } else if (tipoCalculo == TipoCalculo.Monto) {
+        resultMonto = calcularMontoAnualidad(
+            capital, interes, tiempo, frecuenciaPago.index + 1);
+      } else if (tipoCalculo == TipoCalculo.Capital) {
+        resultCapital = calcularCapital(capital, interes, tiempo);
+      }
+      error = null;
+    } catch (e) {
+      setState(() {
+        error = e.toString();
+      });
+    }
+  }
+
+  String truncateDecimal(double? value) {
+    if (value == null) return "";
+    return value.toStringAsFixed(2);
+  }
+
+  Widget getDescripcion(TipoCalculo tipo) {
+    return Column(
+      children: [
+        Text(
+          tipo == TipoCalculo.ValorPresente
+              ? "El Valor Presente (VP) es el valor actual de una serie de flujos de efectivo futuros, descontados a una tasa de interés específica. Representa cuánto vale una cantidad de dinero en el presente, considerando su valor futuro y la tasa de descuento aplicada."
+              : tipo == TipoCalculo.ValorFuturo
+                  ? "El Valor Futuro (VF) es el valor que una inversión tendrá en el futuro, después de acumular intereses o rendimientos a lo largo del tiempo. Representa la cantidad total que se espera que una inversión crezca, incluyendo tanto el principal inicial como los intereses o rendimientos generados."
+                  : tipo == TipoCalculo.Monto
+                      ? "El Monto de la Anualidad es el valor total de todos los pagos realizados o recibidos en una serie de pagos periódicos iguales, conocidos como anualidades. Es la suma de todos los pagos, incluyendo tanto el capital inicial como los intereses generados durante el período de tiempo especificado."
+                      : "El Capital Inicial es la cantidad de dinero que se invierte inicialmente para generar una renta o un flujo de efectivo futuro.",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 12.0,
+              color: Color.fromARGB(
+                  255, 7, 7, 7)), // Cambiar tamaño y color de la letra
+        ),
+        if (tipo == TipoCalculo.Monto)
+          Text("La fórmula para calcular el monto es:"),
+        if (tipo != TipoCalculo.Monto)
+          Image.asset(
+              "assets/${tipo.toString().split('.').last.toLowerCase()}.png",
+              width: 200,
+              height: 200),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor:
+          Color.fromARGB(255, 169, 236, 245), // Cambiar color de fondo
       appBar: AppBar(
-        title: Text('Anualidades'),
+        title: Text('Ingeniería Económica',
+            style: TextStyle(
+                fontSize:
+                    20.0)), // Cambiar tamaño de la letra en el título del app bar
       ),
-      body: Padding(
-        padding: EdgeInsets.all(20.0),
+      body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              'Anualidades: Pagos iguales realizados a intervalos regulares.',
-              style: TextStyle(fontSize: 14),
-            ),
-            SizedBox(height: 10),
-            Text(
-              'Ejemplos de fórmulas:',
-              style: TextStyle(fontSize: 14),
-            ),
-            Text(
-                'Valor actual (PV): PV = C × [1 - (1 + r/n)^-t * (r/n)] / (1 + r/n)',
-                style: TextStyle(fontSize: 14)),
-            Text(
-                'Valor futuro (FV): FV = C × [(1 + r/n)^t - 1 * (r/n)] / (1 + r/n)',
-                style: TextStyle(fontSize: 14)),
-            SizedBox(height: 20),
-            DropdownButton<String>(
-              value: selectedAnnuityType,
-              hint: Text('Selecciona el tipo de Anualidad'),
-              onChanged: (String? newValue) {
-                setState(() {
-                  selectedAnnuityType = newValue ?? '';
-                });
-              },
-              items: <String>['Anticipada', 'Diferida', 'Vencida', 'Ordinaria']
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),
-            SizedBox(height: 20),
-            TextField(
-              controller: capitalController,
-              keyboardType: TextInputType.number,
-              onChanged: (value) {
-                setState(() {
-                  capital = double.parse(value);
-                });
-              },
-              decoration: InputDecoration(labelText: 'Capital '),
-            ),
-            TextField(
-              controller: tasaInteresController,
-              keyboardType: TextInputType.number,
-              onChanged: (value) {
-                setState(() {
-                  tasainteres = double.parse(value) / 100;
-                });
-              },
-              decoration: InputDecoration(labelText: 'Tasa de Interés (%)'),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                _selectDate(context);
-              },
-              child: Text(selectedDate != null
-                  ? 'Fecha seleccionada: ${selectedDate!.toString().substring(0, 10)}'
-                  : 'Seleccionar fecha'),
-            ),
-            SizedBox(height: 20),
+          children: [
             Row(
-              children: <Widget>[
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
                 ElevatedButton(
-                  onPressed: () {
-                    if (selectedAnnuityType.isNotEmpty &&
-                        capital != 0.0 &&
-                        tasainteres != 0.0) {
-                      // Calcular Valor Presente
-                      double result = calcularValorPresente(capital,
-                          tasainteres, selectedDate!, selectedAnnuityType);
-                      _showResult('Valor Presente', result);
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Por favor completa todos los campos'),
-                        ),
-                      );
-                    }
-                  },
-                  child: Text('Calcular PV'),
+                  onPressed: () =>
+                      setState(() => tipoCalculo = TipoCalculo.ValorPresente),
+                  child: Text("Calcular VP"),
                 ),
-                SizedBox(width: 10),
                 ElevatedButton(
-                  onPressed: () {
-                    if (selectedAnnuityType.isNotEmpty &&
-                        capital != 0.0 &&
-                        tasainteres != 0.0) {
-                      // Calcular Valor Futuro
-                      double result = calcularValorFuturo(capital, tasainteres,
-                          selectedDate!, selectedAnnuityType);
-                      _showResult('Valor Futuro', result);
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Por favor completa todos los campos'),
-                        ),
-                      );
-                    }
-                  },
-                  child: Text('Calcular FV'),
+                  onPressed: () =>
+                      setState(() => tipoCalculo = TipoCalculo.ValorFuturo),
+                  child: Text("Calcular VF"),
                 ),
+                ElevatedButton(
+                  onPressed: () =>
+                      setState(() => tipoCalculo = TipoCalculo.Monto),
+                  child: Text("Calcular Monto"),
+                ),
+                ElevatedButton(
+                  onPressed: () =>
+                      setState(() => tipoCalculo = TipoCalculo.Capital),
+                  child: Text("Calcular Capital"),
+                ),
+              ],
+            ),
+            Container(
+              padding: EdgeInsets.all(16),
+              child: getDescripcion(tipoCalculo),
+            ),
+            Column(
+              children: [
+                InputControl(
+                    labelName: "Capital",
+                    inputName: "capital",
+                    handleInputChange: handleInputChange,
+                    value: capital.toString(),
+                    type: ""),
+                InputControl(
+                    labelName: "Tasa de Interés (%)",
+                    inputName: "interes",
+                    handleInputChange: handleInputChange,
+                    value: interes.toString(),
+                    type: ""),
+                InputControl(
+                    labelName: "Periodos",
+                    inputName: "tiempo",
+                    handleInputChange: handleInputChange,
+                    value: tiempo.toString(),
+                    type: ""),
+                DropdownButtonFormField(
+                  decoration: InputDecoration(labelText: "Frecuencia de Pago"),
+                  value: frecuenciaPago,
+                  onChanged: (value) =>
+                      setState(() => frecuenciaPago = value as FrecuenciaPago),
+                  items: FrecuenciaPago.values.map((frecuencia) {
+                    return DropdownMenuItem(
+                      value: frecuencia,
+                      child: Text(frecuencia.toString().split(".").last),
+                    );
+                  }).toList(),
+                ),
+                ElevatedButton(
+                  onPressed: onSubmit,
+                  child: Text("Calcular"),
+                ),
+                if (error != null)
+                  Text(error!, style: TextStyle(color: Colors.red)),
+                if (tipoCalculo == TipoCalculo.ValorPresente &&
+                    resultVa != null)
+                  Text(
+                      "Valor Actual de las Anualidades: ${truncateDecimal(resultVa)}",
+                      style: TextStyle(color: Color.fromARGB(255, 250, 6, 6))),
+                if (tipoCalculo == TipoCalculo.ValorFuturo && resultVf != null)
+                  Text(
+                      "Valor Futuro de las Anualidades: ${truncateDecimal(resultVf)}",
+                      style: TextStyle(color: Color.fromARGB(255, 252, 4, 4))),
+                if (tipoCalculo == TipoCalculo.Monto && resultMonto != null)
+                  Text(
+                      "Monto de las Anualidades: ${truncateDecimal(resultMonto)}",
+                      style: TextStyle(color: Color.fromARGB(255, 247, 6, 6))),
+                if (tipoCalculo == TipoCalculo.Capital && resultCapital != null)
+                  Text("Capital Inicial: ${truncateDecimal(resultCapital)}",
+                      style: TextStyle(color: Color.fromARGB(255, 248, 6, 6))),
               ],
             ),
           ],
         ),
       ),
-    );
-  }
-
-  double calcularValorPresente(double capital, double tasaInteres,
-      DateTime tiempo, String selectedType) {
-    double yearsDifference = _calculateTimePeriod(tiempo);
-    double resultInteres = tasaInteres / 100;
-    double factor = pow(1 + resultInteres, yearsDifference).toDouble();
-
-    if (selectedType == 'Anticipada') {
-      double factor = pow(1 + resultInteres, -1).toDouble();
-      return capital / factor;
-    } else if (selectedType == 'Diferida') {
-      return capital * factor;
-    } else if (selectedType == 'Vencida') {
-      return capital * (1 - 1 / factor) / resultInteres;
-    } else {
-      return capital * (1 - 1 / factor) / resultInteres;
-    }
-  }
-
-  double calcularValorFuturo(double capital, double tasaInteres,
-      DateTime tiempo, String selectedType) {
-    double yearsDifference = _calculateTimePeriod(tiempo);
-    double resultInteres = tasaInteres / 100;
-    double factor = pow(1 + resultInteres, yearsDifference).toDouble();
-    if (selectedType == 'Anticipada') {
-      double factor = pow(1 + resultInteres, -yearsDifference).toDouble();
-      return capital * factor;
-    } else if (selectedType == 'Diferida') {
-      return capital * pow(factor, yearsDifference);
-    } else if (selectedType == 'Vencida') {
-      return capital *
-          ((pow(1 + resultInteres, yearsDifference) - 1) / resultInteres);
-    } else {
-      double factor = pow(1 + resultInteres, -yearsDifference).toDouble();
-      return capital * (1 - 1 / factor) / (resultInteres);
-    }
-  }
-
-  void _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime.now(),
-    );
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-      });
-      // Calcular el tiempo total antes de la fecha seleccionada
-      double totalYears = _calculateTimePeriod(selectedDate!);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-              'Han transcurrido $totalYears años desde la fecha seleccionada.'),
-        ),
-      );
-    }
-  }
-
-  double _calculateTimePeriod(DateTime selectedDate) {
-    DateTime currentDate = DateTime.now();
-    int daysDifference = currentDate.difference(selectedDate).inDays;
-    double yearsDifference = daysDifference / 365;
-    return yearsDifference;
-  }
-
-  void _showResult(String title, double result) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title),
-          content: Text('Resultado: $result'),
-        );
-      },
     );
   }
 }
