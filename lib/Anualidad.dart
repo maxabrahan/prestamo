@@ -251,7 +251,7 @@ class _AnualidadesFormState extends State<AnualidadesForm> {
       appBar: AppBar(
         backgroundColor: Colors.indigo,
         foregroundColor: Colors.white,
-        title: Text('Ingeniería Económica',
+        title: Text('Anualidades',
             style: TextStyle(
                 fontSize:
                     20.0)), // Cambiar tamaño de la letra en el título del app bar
@@ -264,6 +264,7 @@ class _AnualidadesFormState extends State<AnualidadesForm> {
               children: [
                 Column(
                   children: [
+                    SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () => setState(
                           () => tipoCalculo = TipoCalculo.ValorPresente),
@@ -280,6 +281,7 @@ class _AnualidadesFormState extends State<AnualidadesForm> {
                 SizedBox(width: 16),
                 Column(
                   children: [
+                    SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () =>
                           setState(() => tipoCalculo = TipoCalculo.Monto),

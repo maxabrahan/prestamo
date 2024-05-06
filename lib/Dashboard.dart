@@ -1,24 +1,32 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:pro0030/Amortizacion.dart';
 import 'package:pro0030/Anualidad.dart';
+import 'package:pro0030/Capitalizacion.dart';
 import 'package:pro0030/InteresCompuesto.dart';
 import 'package:pro0030/InteresSimple.dart';
+import 'package:pro0030/Tir.dart';
 
 class Dashboard extends StatelessWidget {
   var height, width;
 
   List imgData = [
-    "/assets/images/itsimple.png",
-    "/assetsimages/itcompuesto.png",
-    "/assets/images/anualidades.png",
+    "assets/itsimple.png",
+    "assets/itcompuesto.png",
+    "assets/anualidades.png",
+    "assets/Tasa de interes de retorno.png",
+    "assets/Capitalizacion.png",
+    "assets/Amortizacion.png",
   ];
 
   List titles = [
     "Interes simple",
     "Interes Compuesto",
     "Anualidades",
-    "About us",
+    "Tasa de interes de retorno",
+    "Capitalizacion",
+    "Amortizacion",
   ];
   @override
   Widget build(BuildContext context) {
@@ -53,8 +61,8 @@ class Dashboard extends StatelessWidget {
                             child: Icon(Icons.menu, color: Colors.white),
                           ),
                           Container(
-                            height: 40,
-                            width: 40,
+                            height: 45,
+                            width: 45,
                             // Coloca un color para visualizar el contenedor
                           ),
                         ],
@@ -134,6 +142,34 @@ class Dashboard extends StatelessWidget {
                                 ),
                               );
                               break;
+
+                            case 3:
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => TirCalculatorPage(),
+                                ),
+                              );
+                              break;
+
+                            case 4:
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      CapitalizationCalculator(),
+                                ),
+                              );
+                              break;
+
+                            case 5:
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      AmortizationCalculator(),
+                                ),
+                              );
                           }
                         },
                         child: Container(
@@ -160,7 +196,7 @@ class Dashboard extends StatelessWidget {
                               Text(
                                 titles[index],
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                 ),
                               )
