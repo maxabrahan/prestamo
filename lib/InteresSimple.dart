@@ -414,6 +414,22 @@ class _InteresSimpleState extends State<InteresSimple> {
                   ),
                 ),
               ),
+              SizedBox(height: 10),
+              Container(
+                child: const Padding(
+                  padding: EdgeInsets.all(1.0),
+                  child: Center(
+                    child: Text(
+                      "C: Capital ,  i: interes ",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                ),
+              ),
               DropdownButton<String>(
                 value: selectedRateType,
                 onChanged: (String? newValue) {

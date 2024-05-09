@@ -98,6 +98,151 @@ class _InterestCalculatorPageState extends State<InterestCalculatorPage> {
             children: <Widget>[
               Text(
                   'El interés compuesto es un método financiero donde los intereses se calculan no solo sobre el capital inicial, sino también sobre los intereses acumulados. Con el tiempo, esto resulta en un crecimiento exponencial de la inversión. A medida que los intereses se reinvierten, el capital total aumenta, generando mayores ganancias en comparación con el interés simple.'),
+              SizedBox(height: 20),
+              Container(
+                child: const Padding(
+                  padding: EdgeInsets.all(1.0),
+                  child: Center(
+                    child: Text(
+                      "VF = VP (1+i) n ",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              Container(
+                child: const Padding(
+                  padding: EdgeInsets.all(1.0),
+                  child: Center(
+                    child: Text(
+                      " N = Log MC - Log C / Log (1+i) ",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              Container(
+                child: const Padding(
+                  padding: EdgeInsets.all(1.0),
+                  child: Center(
+                    child: Text(
+                      "VF: Valor Futuro ",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              Container(
+                child: const Padding(
+                  padding: EdgeInsets.all(1.0),
+                  child: Center(
+                    child: Text(
+                      "VP: Valor Presente ",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              Container(
+                child: const Padding(
+                  padding: EdgeInsets.all(1.0),
+                  child: Center(
+                    child: Text(
+                      "i: tasa de interes periodica vencida ",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              Container(
+                child: const Padding(
+                  padding: EdgeInsets.all(1.0),
+                  child: Center(
+                    child: Text(
+                      "n: numero de periodos  ",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              Container(
+                child: const Padding(
+                  padding: EdgeInsets.all(1.0),
+                  child: Center(
+                    child: Text(
+                      "N : Tiempo ",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              Container(
+                child: const Padding(
+                  padding: EdgeInsets.all(1.0),
+                  child: Center(
+                    child: Text(
+                      "MC: Monto Compuesto ",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              Container(
+                child: const Padding(
+                  padding: EdgeInsets.all(1.0),
+                  child: Center(
+                    child: Text(
+                      "C: Capital ",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
               TextField(
                 controller: _capitalController,
                 decoration: InputDecoration(labelText: 'Capital'),

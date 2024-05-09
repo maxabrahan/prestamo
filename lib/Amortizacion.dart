@@ -75,108 +75,322 @@ class _AmortizationCalculatorState extends State {
         backgroundColor: Colors.indigo,
         foregroundColor: Colors.white,
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            DropdownButtonFormField(
-              value: amortizationType,
-              items: [
-                DropdownMenuItem(
-                  child: Text('Constant Amortization',
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                  'El interés compuesto es un método financiero donde los intereses se calculan no solo sobre el capital inicial, sino también sobre los intereses acumulados. Con el tiempo, esto resulta en un crecimiento exponencial de la inversión. A medida que los intereses se reinvierten, el capital total aumenta, generando mayores ganancias en comparación con el interés simple.'),
+              SizedBox(height: 20),
+              Container(
+                child: const Padding(
+                  padding: EdgeInsets.all(1.0),
+                  child: Center(
+                    child: Text(
+                      "P = A/n+rxPi ",
                       style: TextStyle(
-                          color: Colors.black)), // Texto en color blanco
-                  value: AmortizationType.Constant,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
                 ),
-                DropdownMenuItem(
-                  child: Text('Straight Line Amortization',
+              ),
+              SizedBox(height: 20),
+              Container(
+                child: const Padding(
+                  padding: EdgeInsets.all(1.0),
+                  child: Center(
+                    child: Text(
+                      " A = C/n ",
                       style: TextStyle(
-                          color: Colors.black)), // Texto en color blanco
-                  value: AmortizationType.StraightLine,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
                 ),
-              ],
-              onChanged: (value) {
-                setState(() {
-                  amortizationType = value;
-                });
-              },
-              decoration: InputDecoration(labelText: 'Amortization Type'),
-            ),
-            DropdownButtonFormField(
-              value: amortizationMethod,
-              items: [
-                DropdownMenuItem(
-                  child: Text('American',
+              ),
+              SizedBox(height: 20),
+              Container(
+                child: const Padding(
+                  padding: EdgeInsets.all(1.0),
+                  child: Center(
+                    child: Text(
+                      " Metodo Americano : Pi = P x r ",
                       style: TextStyle(
-                          color: Colors.black)), // Texto en color blanco
-                  value: AmortizationMethod.American,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
                 ),
-                DropdownMenuItem(
-                  child: Text('French',
+              ),
+              SizedBox(height: 20),
+              Container(
+                child: const Padding(
+                  padding: EdgeInsets.all(1.0),
+                  child: Center(
+                    child: Text(
+                      " Metodo frances: P = Pi x (1-(1+r)^-n)/r ",
                       style: TextStyle(
-                          color: Colors.black)), // Texto en color blanco
-                  value: AmortizationMethod.French,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
                 ),
-                DropdownMenuItem(
-                  child: Text('German',
+              ),
+              SizedBox(height: 20),
+              Container(
+                child: const Padding(
+                  padding: EdgeInsets.all(1.0),
+                  child: Center(
+                    child: Text(
+                      " A = amortizacion anual",
                       style: TextStyle(
-                          color: Colors.white)), // Texto en color blanco
-                  value: AmortizationMethod.German,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
                 ),
-              ],
-              onChanged: (value) {
-                setState(() {
-                  amortizationMethod = value;
-                });
-              },
-              decoration: InputDecoration(labelText: 'Amortization Method'),
-            ),
-            TextField(
-              style: TextStyle(color: Colors.white), // Texto en color blanco
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: 'Loan Amount'),
-              onChanged: (value) {
-                setState(() {
-                  loanAmount = double.tryParse(value) ?? 0.0;
-                });
-              },
-            ),
-            TextField(
-              style: TextStyle(color: Colors.white), // Texto en color blanco
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: 'Interest Rate (%)'),
-              onChanged: (value) {
-                setState(() {
-                  interestRate = double.tryParse(value) ?? 0.0;
-                });
-              },
-            ),
-            TextField(
-              style: TextStyle(color: Colors.white), // Texto en color blanco
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: 'Years'),
-              onChanged: (value) {
-                setState(() {
-                  years = int.tryParse(value) ?? 0;
-                });
-              },
-            ),
-            SizedBox(height: 20.0),
-            ElevatedButton(
-              onPressed: () {
-                calculateMonthlyPayment();
-              },
-              child: Text('Calculate'),
-            ),
-            SizedBox(height: 20.0),
-            Text(
-              'Monthly Payment: $monthlyPayment',
-              style: TextStyle(
-                  fontSize: 20.0, color: Colors.white), // Texto en color blanco
-              textAlign: TextAlign.center,
-            ),
-          ],
+              ),
+              SizedBox(height: 10),
+              Container(
+                child: const Padding(
+                  padding: EdgeInsets.all(1.0),
+                  child: Center(
+                    child: Text(
+                      " C = costo inicial del activo",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              Container(
+                child: const Padding(
+                  padding: EdgeInsets.all(1.0),
+                  child: Center(
+                    child: Text(
+                      " n = numeros de años de vida util del activo",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              Container(
+                child: const Padding(
+                  padding: EdgeInsets.all(1.0),
+                  child: Center(
+                    child: Text(
+                      " Metodo Americano : Pi = P x r ",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              Container(
+                child: const Padding(
+                  padding: EdgeInsets.all(1.0),
+                  child: Center(
+                    child: Text(
+                      " Metodo frances: P = Pi x (1-(1+r)^-n)/r ",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              Container(
+                child: const Padding(
+                  padding: EdgeInsets.all(1.0),
+                  child: Center(
+                    child: Text(
+                      " Pi = monto principal dell prestamo",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              Container(
+                child: const Padding(
+                  padding: EdgeInsets.all(1.0),
+                  child: Center(
+                    child: Text(
+                      " P = pago periodico",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              Container(
+                child: const Padding(
+                  padding: EdgeInsets.all(1.0),
+                  child: Center(
+                    child: Text(
+                      " r = atsa de interes periodica",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              Container(
+                child: const Padding(
+                  padding: EdgeInsets.all(1.0),
+                  child: Center(
+                    child: Text(
+                      " n = numero de periodos",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 25),
+              DropdownButtonFormField(
+                value: amortizationType,
+                items: [
+                  DropdownMenuItem(
+                    child: Text('Constant Amortization',
+                        style: TextStyle(
+                            color: Colors.black)), // Texto en color blanco
+                    value: AmortizationType.Constant,
+                  ),
+                  DropdownMenuItem(
+                    child: Text('Straight Line Amortization',
+                        style: TextStyle(
+                            color: Colors.black)), // Texto en color blanco
+                    value: AmortizationType.StraightLine,
+                  ),
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    amortizationType = value;
+                  });
+                },
+                decoration: InputDecoration(labelText: 'Amortization Type'),
+              ),
+              DropdownButtonFormField(
+                value: amortizationMethod,
+                items: [
+                  DropdownMenuItem(
+                    child: Text('American',
+                        style: TextStyle(
+                            color: Colors.black)), // Texto en color blanco
+                    value: AmortizationMethod.American,
+                  ),
+                  DropdownMenuItem(
+                    child: Text('French',
+                        style: TextStyle(
+                            color: Colors.black)), // Texto en color blanco
+                    value: AmortizationMethod.French,
+                  ),
+                  DropdownMenuItem(
+                    child: Text('German',
+                        style: TextStyle(
+                            color: Colors.white)), // Texto en color blanco
+                    value: AmortizationMethod.German,
+                  ),
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    amortizationMethod = value;
+                  });
+                },
+                decoration: InputDecoration(labelText: 'Amortization Method'),
+              ),
+              TextField(
+                style: TextStyle(color: Colors.black), // Texto en color blanco
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(labelText: 'Loan Amount'),
+                onChanged: (value) {
+                  setState(() {
+                    loanAmount = double.tryParse(value) ?? 0.0;
+                  });
+                },
+              ),
+              TextField(
+                style: TextStyle(color: Colors.black), // Texto en color blanco
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(labelText: 'Interest Rate (%)'),
+                onChanged: (value) {
+                  setState(() {
+                    interestRate = double.tryParse(value) ?? 0.0;
+                  });
+                },
+              ),
+              TextField(
+                style: TextStyle(color: Colors.black), // Texto en color blanco
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(labelText: 'Years'),
+                onChanged: (value) {
+                  setState(() {
+                    years = int.tryParse(value) ?? 0;
+                  });
+                },
+              ),
+              SizedBox(height: 20.0),
+              ElevatedButton(
+                onPressed: () {
+                  calculateMonthlyPayment();
+                },
+                child: Text('Calculate'),
+              ),
+              SizedBox(height: 20.0),
+              Text(
+                'Monthly Payment: $monthlyPayment',
+                style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.black), // Texto en color blanco
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
       ),
     );

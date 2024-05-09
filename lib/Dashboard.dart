@@ -138,7 +138,7 @@ class Dashboard extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => AnualidadesForm(),
+                                  builder: (context) => AnualidadesPage(),
                                 ),
                               );
                               break;
